@@ -8,7 +8,7 @@ var highEl = document.getElementsByClassName("high");
 var lowEl = document.getElementsByClassName("low");
 var humidityEl = document.getElementsByClassName("humidity");
 var windEl = document.getElementsByClassName("wind");
-
+var precipitationEl = document.getElementsByClassName("precipitation");
 
 var weatherData;
 var searchHistory = [];
@@ -51,10 +51,15 @@ function renderPage(data) {
         highEl[i].textContent = "High: " + currentTemp.temp_max + "\u00B0C";
         lowEl[i].textContent = "Low: " + currentTemp.temp_min + "\u00B0C";
         humidityEl[i].textContent = "Humidity: " + currentTemp.humidity + "%";
-        
+
         dateEl[i].textContent = current.dt_txt.substring(5,10);
         windEl[i].textContent = "Wind: " + current.wind.speed + "MPH";
-        // prec("Precipitation: " + rain["3h"] + "%");
+        // TODO: adding in precipitation and dealing with non guarenteed data
+        // if (current.rain["3h"] !== undefined) {
+        //     precipitationEl[i].textContent = ("Precipitation: " + current.rain["3h"] + "%");
+        // } else {
+        //     precipitationEl[i].textContent = ("Precipitation: 0%");
+        // }
     }
 }
 
