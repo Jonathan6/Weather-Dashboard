@@ -43,15 +43,19 @@ function getData(input) {
 };
 
 function renderPage(data) {
-    var current = data.list[0].main;
-    var rain = data.list[0].rain;
-    dateEl[0].textContent = data.list[0].dt_txt.substring(5,10);
-    averageEl[0].textContent = current.temp + "\u00B0C";
-    highEl[0].textContent = "High: " + current.temp_max + "\u00B0C";
-    lowEl[0].textContent = "Low: " + current.temp_min + "\u00B0C";
-    humidityEl[0].textContent = "Humidity: " + current.humidity + "%";
-    windEl[0].textContent = "Wind: " + data.list[0].wind.speed + "MPH";
-    // prec("Precipitation: " + rain["3h"] + "%");
+    for (var i = 0; i < dateEl.length; i++) {
+        var currentTemp = data.list[i].main;
+        var current = data.list[i];
+
+        averageEl[i].textContent = currentTemp.temp + "\u00B0C";
+        highEl[i].textContent = "High: " + currentTemp.temp_max + "\u00B0C";
+        lowEl[i].textContent = "Low: " + currentTemp.temp_min + "\u00B0C";
+        humidityEl[i].textContent = "Humidity: " + currentTemp.humidity + "%";
+        
+        dateEl[i].textContent = current.dt_txt.substring(5,10);
+        windEl[i].textContent = "Wind: " + current.wind.speed + "MPH";
+        // prec("Precipitation: " + rain["3h"] + "%");
+    }
 }
 
 function recordSearch(input) {
@@ -61,3 +65,4 @@ function recordSearch(input) {
     }
     localStorage.setItem("history", searchHistory);
 }
+
