@@ -9,6 +9,7 @@ var lowEl = document.getElementsByClassName("low");
 var humidityEl = document.getElementsByClassName("humidity");
 var windEl = document.getElementsByClassName("wind");
 
+
 var weatherData;
 var searchHistory = [];
 
@@ -18,7 +19,7 @@ dropdownEl.on('click', function(event) {
 });
 
 searchEl.on("click", function(event) {
-    getData(inputEl.val().trim());
+    weatherData = getData(inputEl.val().trim());
 });
 
 function getData(input) {
@@ -29,7 +30,8 @@ function getData(input) {
             if (response.ok) {
                 response.json().then(function (data) {
                     renderPage(data);
-                    weatherData = data;
+                    console.log(data);
+                    return data;
                 });
             } else {
                 alert("Error: " + response.statusText);
@@ -49,7 +51,7 @@ function renderPage(data) {
     lowEl[0].textContent = "Low: " + current.temp_min + "\u00B0C";
     humidityEl[0].textContent = "Humidity: " + current.humidity + "%";
     windEl[0].textContent = "Wind: " + data.list[0].wind.speed + "MPH";
-    // $("#Precipitation").text("Precipitation: " + rain["3h"] + "%");
+    // prec("Precipitation: " + rain["3h"] + "%");
 }
 
 function recordSearch(input) {
