@@ -2,6 +2,7 @@ var dropdownEl = $('.dropdown');
 var inputEl = $(".input");
 var searchEl = $("#search");
 
+var dateEl = document.getElementsByClassName("date");
 var averageEl = document.getElementsByClassName("avg");
 var highEl = document.getElementsByClassName("high");
 var lowEl = document.getElementsByClassName("low");
@@ -42,6 +43,7 @@ function getData(input) {
 function renderPage(data) {
     var current = data.list[0].main;
     var rain = data.list[0].rain;
+    dateEl[0].textContent = data.list[0].dt_txt.substring(5,10);
     averageEl[0].textContent = current.temp + "\u00B0C";
     highEl[0].textContent = "High: " + current.temp_max + "\u00B0C";
     lowEl[0].textContent = "Low: " + current.temp_min + "\u00B0C";
