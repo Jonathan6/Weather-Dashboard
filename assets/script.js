@@ -1,6 +1,7 @@
 var dropdownEl = $('.dropdown');
 var inputEl = $(".input");
 var searchEl = $("#search");
+var buttonBoxEl = $(".buttonBox");
 
 var dateEl = document.getElementsByClassName("date");
 var averageEl = document.getElementsByClassName("avg");
@@ -24,7 +25,9 @@ searchEl.on("click", function(event) {
     weatherData = getData(inputEl.val().trim());
 });
 
-
+buttonBoxEl.on("click", function(event) {
+    console.log(event);
+});
 
 function getData(input) {
     recordSearch(input);
@@ -50,9 +53,9 @@ function renderPage(data) {
         var currentTemp = data.list[i].main;
         var current = data.list[i];
 
-        averageEl[i].textContent = currentTemp.temp + "\u00B0C";
-        highEl[i].textContent = "High: " + currentTemp.temp_max + "\u00B0C";
-        lowEl[i].textContent = "Low: " + currentTemp.temp_min + "\u00B0C";
+        averageEl[i].textContent = currentTemp.temp + "\u00B0F";
+        highEl[i].textContent = "High: " + currentTemp.temp_max + "\u00B0F";
+        lowEl[i].textContent = "Low: " + currentTemp.temp_min + "\u00B0F";
         humidityEl[i].textContent = "Humidity: " + currentTemp.humidity + "%";
 
         dateEl[i].textContent = current.dt_txt.substring(0,10);
