@@ -6,16 +6,34 @@ var buttonBoxEl = document.getElementsByClassName("buttonBox");
 
 const ctx = document.getElementById('myChart');
 
+var myChart = new Chart(ctx, {
+    type: "line",
+    data: {
+        labels: ["12-5","12-5","12-5","12-5","12-5","12-5"],
+        datasets: [{
+            label: 'My First Dataset',
+            data: [12, 19, 3, 5, 2, 3],
+            backgroundColor: 'rgb(0, 0, 0)',
+            borderColor: 'rgb(0, 0, 0)',
+            tension: .1,
+            borderWidth: 2
+        }]
+    },
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+
+myChart.resize(20,20);
+
 var featDateEl = document.getElementsByClassName("featDate");
-const data = {
-  datasets: [{
-    label: 'My First Dataset',
-    data: [65, 59, 80, 81, 56, 55, 40],
-    fill: false,
-    borderColor: 'rgb(75, 192, 192)',
-    tension: 0.1
-  }]
-};
+
+
+var featDateEl = document.getElementById("featDate");
 
 var miniDayEl = document.getElementsByClassName("mini");
 
@@ -41,7 +59,9 @@ dropdownEl.on('click', function(event) {
 });
 
 searchEl.on("click", function(event) {
-    weatherData = getData(inputEl.val().trim());
+    if (inputEl.val().trim() !== "") {
+        getData(inputEl.val().trim());
+    }
 });
 
 miniDayEl[0].addEventListener("click", setFeature);
@@ -50,29 +70,22 @@ miniDayEl[2].addEventListener("click", setFeature);
 miniDayEl[3].addEventListener("click", setFeature);
 miniDayEl[4].addEventListener("click", setFeature);
 
+
+// Function called by mini day event listeners to set the feature
+// Not functional yet shouldn't call it 
 function setFeature(event) {
-    console.log(event.currentTarget.dataset.index);
     var index = event.currentTarget.dataset.index;
     var date = dataDates[index];
     var currentData = datedData[date];
-    featDateEl[0].textContent = date;
+    featDateEl.textContent = date;
 
-    const chartInteractionModeNearest = new Chart(ctx, {
-        type: 'line',
-        data: {
-            datasets: [{
-                data: [0, 0],
-            }, {
-                data: [0, 1]
-            }, {
-                data: [1, 0],
-                showLine: true // overrides the `line` dataset default
-            }
-            ]
-        }
-    });
+    myChart.data.datasets[0].data = [13,14,15,12,14,18];
+    myChart.update();
 }
 
+// Called by the search button with whatever is in the input val
+// Retrieves the data from the weather api
+// Sets weatherData varibale to api data nad renders the rest of the page
 function getData(input) {
     recordSearch(input);
     var apiUrl = "http://api.openweathermap.org/data/2.5/forecast?units=imperial&q=" + input + "&appid=31ed1d78ece05a26dbb0c6020e7b32b5";
@@ -80,7 +93,6 @@ function getData(input) {
         .then(function (response) {
             if (response.ok) {
                 response.json().then(function (data) {
-                    renderPage(data);
                     weatherData = data;
                 });
             } else {
@@ -92,6 +104,7 @@ function getData(input) {
         });
 };
 
+// function takes in organized data and renders the webpage by date
 function renderPage(data) {
     organizeData();
     for (var i = 0; i < dateEl.length; i++) {
@@ -138,7 +151,8 @@ function unixToDate(unix) {
     return formattedTime;
 }
 
-// Organizes api weather data based on date
+// Organizes api weather data into datedData based on date
+// Also adds all the dates to dataDates so I know how to traverse datedData
 function organizeData() {
     // For loop that goes through all elements in data
     weatherData.list.forEach(element => {
@@ -159,9 +173,5 @@ function loadDataLocal() {
     weatherData = JSON.parse(localStorage.getItem("TEST"));
 }
 
-function resetMiniColor() {
-    
-}
-
 loadDataLocal();
-organizeData();
+renderPage();
