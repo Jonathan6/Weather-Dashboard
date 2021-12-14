@@ -1,16 +1,35 @@
 var dropdownEl = $('.dropdown');
 var inputEl = $(".input");
 var searchEl = $("#search");
-var buttonBoxEl = $(".buttonBox");
 
+var buttonBoxEl = document.getElementsByClassName("buttonBox");
+
+const ctx = document.getElementById('myChart');
+
+var featDateEl = document.getElementsByClassName("featDate");
+const data = {
+  datasets: [{
+    label: 'My First Dataset',
+    data: [65, 59, 80, 81, 56, 55, 40],
+    fill: false,
+    borderColor: 'rgb(75, 192, 192)',
+    tension: 0.1
+  }]
+};
+
+var miniDayEl = document.getElementsByClassName("mini");
+
+var imgEl = document.querySelectorAll("img");
 var dateEl = document.getElementsByClassName("date");
 var averageEl = document.getElementsByClassName("avg");
 var highEl = document.getElementsByClassName("high");
 var lowEl = document.getElementsByClassName("low");
 var humidityEl = document.getElementsByClassName("humidity");
 var windEl = document.getElementsByClassName("wind");
-var precipitationEl = document.getElementsByClassName("precipitation");
+var weatherMainEl = document.getElementsByClassName("WeatherMain");
+var weatherDesEl = document.getElementsByClassName("WeatherDes");
 
+var dataDates = [];
 var weatherData;
 var datedData = {};
 var searchHistory = [];
@@ -25,9 +44,34 @@ searchEl.on("click", function(event) {
     weatherData = getData(inputEl.val().trim());
 });
 
-buttonBoxEl.on("click", function(event) {
-    console.log(event);
-});
+miniDayEl[0].addEventListener("click", setFeature);
+miniDayEl[1].addEventListener("click", setFeature);
+miniDayEl[2].addEventListener("click", setFeature);
+miniDayEl[3].addEventListener("click", setFeature);
+miniDayEl[4].addEventListener("click", setFeature);
+
+function setFeature(event) {
+    console.log(event.currentTarget.dataset.index);
+    var index = event.currentTarget.dataset.index;
+    var date = dataDates[index];
+    var currentData = datedData[date];
+    featDateEl[0].textContent = date;
+
+    const chartInteractionModeNearest = new Chart(ctx, {
+        type: 'line',
+        data: {
+            datasets: [{
+                data: [0, 0],
+            }, {
+                data: [0, 1]
+            }, {
+                data: [1, 0],
+                showLine: true // overrides the `line` dataset default
+            }
+            ]
+        }
+    });
+}
 
 function getData(input) {
     recordSearch(input);
@@ -49,23 +93,23 @@ function getData(input) {
 };
 
 function renderPage(data) {
+    organizeData();
     for (var i = 0; i < dateEl.length; i++) {
-        var currentTemp = data.list[i].main;
-        var current = data.list[i];
+        var currentTemp = datedData[dataDates[i]][0].main;
+        var current = datedData[dataDates[i]][0];
 
         averageEl[i].textContent = currentTemp.temp + "\u00B0F";
         highEl[i].textContent = "High: " + currentTemp.temp_max + "\u00B0F";
         lowEl[i].textContent = "Low: " + currentTemp.temp_min + "\u00B0F";
         humidityEl[i].textContent = "Humidity: " + currentTemp.humidity + "%";
 
-        dateEl[i].textContent = current.dt_txt.substring(0,10);
+        dateEl[i].textContent = current.dt_txt.substring(5,10);
         windEl[i].textContent = "Wind: " + current.wind.speed + "MPH";
-        // TODO: adding in precipitation and dealing with non guarenteed data
-        // if (current.rain["3h"] !== undefined) {
-        //     precipitationEl[i].textContent = ("Precipitation: " + current.rain["3h"] + "%");
-        // } else {
-        //     precipitationEl[i].textContent = ("Precipitation: 0%");
-        // }
+
+        imgEl[i].src = "assets/images/" + current.weather[0].main + ".jpg"
+        
+        weatherMainEl[i].textContent = current.weather[0].main;
+        weatherDesEl[i].textContent = current.weather[0].description; 
     }
 }
 
@@ -101,6 +145,7 @@ function organizeData() {
         var currentDate = element.dt_txt.substring(0,10);
         if (!(currentDate in datedData)) {
             datedData[currentDate] = [];
+            dataDates.push(currentDate);
         }
         datedData[currentDate].push(element);
     });
@@ -114,4 +159,9 @@ function loadDataLocal() {
     weatherData = JSON.parse(localStorage.getItem("TEST"));
 }
 
+function resetMiniColor() {
+    
+}
+
 loadDataLocal();
+organizeData();

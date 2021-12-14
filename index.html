@@ -79,9 +79,8 @@
                 <div class="tile is-parent  is-8">
                     <!-- Feature Day Weather -->
                     <div class="tile is-child notification is-primary">
-                        <div class="block">This text is within a <strong>block</strong>.</div>
-                        <div class="block">This text is within a <strong>second block</strong>. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean efficitur sit amet massa fringilla egestas. Nullam condimentum luctus turpis.</div>
-                        <div class="block">This text is within a <strong>third block</strong>. This block has no margin at the bottom.</div>
+                        <p class="featDate">hello</p>
+                        <canvas id="myChart" width="400" height="400"></canvas>
                     </div>
                 </div>
             </div>
@@ -90,7 +89,7 @@
                 <div class="tile is-child notification is-link">
                     <div class="columns is-variable is-1-mobile is-0-tablet is-3-desktop is-8-widescreen is-2-fullhd buttonBox">
                         <!-- Day 1 -->
-                        <div class="column is-one-fifth-desktop">
+                        <div class="column is-one-fifth-desktop mini" data-index=0>
                             <div className="column is-one-fifth">
                                 <div class="card">
                                     <div class="card-image">
@@ -111,15 +110,16 @@
                                         </div>
                                         <div class="content is-size-7">
                                         <span class="humidity"></span><br>
-                                        <span class="wind"></span><br>
-                                        <span class="precipitation"></span>
+                                        <span class="wind"></span><br><br>
+                                        <span class="WeatherMain">("snow")</span><br>
+                                        <span class="WeatherDes">("rain and snow")</span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <!-- Day 2 -->
-                        <div class="column is-one-fifth-desktop">
+                        <div class="column is-one-fifth-desktop mini" data-index=1>
                             <div className="column is-one-fifth">
                                 <div class="card">
                                     <div class="card-image">
@@ -140,15 +140,16 @@
                                         </div>
                                         <div class="content is-size-7">
                                         <span class="humidity"></span><br>
-                                        <span class="wind"></span><br>
-                                        <span class="precipitation"></span>
+                                        <span class="wind"></span><br><br>
+                                        <span class="WeatherMain">("snow")</span><br>
+                                        <span class="WeatherDes">("rain and snow")</span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <!-- Day 3 -->
-                        <div class="column is-one-fifth-desktop">
+                        <div class="column is-one-fifth-desktop mini" data-index=2>
                             <div className="column is-one-fifth">
                                 <div class="card">
                                     <div class="card-image">
@@ -169,15 +170,16 @@
                                         </div>
                                         <div class="content is-size-7">
                                         <span class="humidity"></span><br>
-                                        <span class="wind"></span><br>
-                                        <span class="precipitation"></span>
+                                        <span class="wind"></span><br><br>
+                                        <span class="WeatherMain">("snow")</span><br>
+                                        <span class="WeatherDes">("rain and snow")</span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <!-- Day 4 -->
-                        <div class="column is-one-fifth-desktop">
+                        <div class="column is-one-fifth-desktop mini" data-index=3>
                             <div className="column is-one-fifth">
                                 <div class="card">
                                     <div class="card-image">
@@ -198,15 +200,16 @@
                                         </div>
                                         <div class="content is-size-7">
                                         <span class="humidity"></span><br>
-                                        <span class="wind"></span><br>
-                                        <span class="precipitation"></span>
+                                        <span class="wind"></span><br><br>
+                                        <span class="WeatherMain">("snow")</span><br>
+                                        <span class="WeatherDes">("rain and snow")</span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <!-- Day 5 -->
-                        <div class="column is-one-fifth-desktop">
+                        <div class="column is-one-fifth-desktop mini" data-index=4>
                             <div className="column is-one-fifth">
                                 <div class="card">
                                     <div class="card-image">
@@ -227,8 +230,9 @@
                                         </div>
                                         <div class="content is-size-7">
                                         <span class="humidity"></span><br>
-                                        <span class="wind"></span><br>
-                                        <span class="precipitation"></span>
+                                        <span class="wind"></span><br><br>
+                                        <span class="WeatherMain">("snow")</span><br>
+                                        <span class="WeatherDes">("rain and snow")</span>
                                         </div>
                                     </div>
                                 </div>
@@ -247,6 +251,7 @@
           </p>
         </div>
     </footer>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="assets/script.js"></script>
 </body>
