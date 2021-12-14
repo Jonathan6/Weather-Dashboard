@@ -1,3 +1,4 @@
+var cityEl = document.getElementById("city");
 var dropdownEl = $('.dropdown');
 var inputEl = $(".input");
 var searchEl = $("#search");
@@ -18,17 +19,8 @@ var myChart = new Chart(ctx, {
             tension: .1,
             borderWidth: 2
         }]
-    },
-    options: {
-        scales: {
-            y: {
-                beginAtZero: true
-            }
-        }
     }
 });
-
-myChart.resize(20,20);
 
 var featDateEl = document.getElementsByClassName("featDate");
 
@@ -62,9 +54,7 @@ dropdownEl.on('click', function(event) {
 });
 
 searchEl.on("click", function(event) {
-    if (inputEl.val().trim() !== "") {
-        getData(inputEl.val().trim());
-    }
+    getData(inputEl.val().trim());
 });
 
 miniDayEl[0].addEventListener("click", setFeature);
@@ -76,17 +66,36 @@ miniDayEl[4].addEventListener("click", setFeature);
 // Function called by mini day event listeners to set the feature
 // Not functional yet shouldn't call it 
 function setFeature(event) {
-    // The index in dataDates of the miniDay we clicked
-    var index = event.currentTarget.dataset.index;
+    var index;
+    if (typeof event === "number") {
+        index = event;
+    } else {
+        // The index in dataDates of the miniDay we clicked
+        index = event.currentTarget.dataset.index;
+    }
     // Convert to the actual date string
     var date = dataDates[index];
     // Accessing the data within datedData
     var currentData = datedData[date];
     featDateEl.textContent = date;
 
+
+    myChart.data.datasets[0].label = date;
+    // Making the arrays for new data and labels
+    var labels = [];
+    var dataTemp = [];
+    var dataMax = [];
+    var dataMin = [];
+    for (var i = 0; i < currentData.length; i++) {
+        labels.push(currentData[i].dt_txt.substring(11,16))  ;
+        dataTemp.push(currentData[i].main.temp);
+        dataMax.push(currentData[i].main.temp);
+        dataMin.push(currentData[i].main.temp);
+    }
+
     // Updating the chart with new data and labels
-    myChart.data.labels = ["new labels"];
-    myChart.data.datasets[0].data = [13,14,15,12,14,18];
+    myChart.data.labels = labels;
+    myChart.data.datasets[0].data = dataTemp;
     myChart.update();
 }
 
@@ -101,6 +110,8 @@ function getData(input) {
             if (response.ok) {
                 response.json().then(function (data) {
                     weatherData = data;
+                    console.log(weatherData);
+                    renderPage();
                 });
             } else {
                 alert("Error: " + response.statusText);
@@ -113,7 +124,11 @@ function getData(input) {
 
 // function takes in organized data and renders the webpage by date
 function renderPage(data) {
+    cityEl.textContent = weatherData.city.name;
+
     organizeData();
+    setFeature(0);
+
     for (var i = 0; i < dateEl.length; i++) {
         var currentTemp = datedData[dataDates[i]][0].main;
         var current = datedData[dataDates[i]][0];
@@ -141,23 +156,6 @@ function recordSearch(input) {
     localStorage.setItem("history", searchHistory);
 }
 
-function unixToDate(unix) {
-    let unix_timestamp = unix;
-    // Create a new JavaScript Date object based on the timestamp
-    // multiplied by 1000 so that the argument is in milliseconds, not seconds.
-    var date = new Date(unix_timestamp * 1000);
-    // Hours part from the timestamp
-    var hours = date.getHours();
-    // Minutes part from the timestamp
-    var minutes = "0" + date.getMinutes();
-    // Seconds part from the timestamp
-    var seconds = "0" + date.getSeconds();
-
-    // Will display time in 10:30:23 format
-    var formattedTime = hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
-    return formattedTime;
-}
-
 // Organizes api weather data into datedData based on date
 // Also adds all the dates to dataDates so I know how to traverse datedData
 function organizeData() {
@@ -180,5 +178,4 @@ function loadDataLocal() {
     weatherData = JSON.parse(localStorage.getItem("TEST"));
 }
 
-loadDataLocal();
-renderPage();
+myChart.resize(20,20);
