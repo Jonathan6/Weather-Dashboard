@@ -32,7 +32,6 @@ myChart.resize(20,20);
 
 var featDateEl = document.getElementsByClassName("featDate");
 
-
 var featDateEl = document.getElementById("featDate");
 
 var miniDayEl = document.getElementsByClassName("mini");
@@ -47,9 +46,13 @@ var windEl = document.getElementsByClassName("wind");
 var weatherMainEl = document.getElementsByClassName("WeatherMain");
 var weatherDesEl = document.getElementsByClassName("WeatherDes");
 
-var dataDates = [];
+// Base api data unfiltered
 var weatherData;
+// Organized data based on date
 var datedData = {};
+// List of all date properites of datedData
+var dataDates = [];
+// List of all previous searches
 var searchHistory = [];
 
 
@@ -70,15 +73,19 @@ miniDayEl[2].addEventListener("click", setFeature);
 miniDayEl[3].addEventListener("click", setFeature);
 miniDayEl[4].addEventListener("click", setFeature);
 
-
 // Function called by mini day event listeners to set the feature
 // Not functional yet shouldn't call it 
 function setFeature(event) {
+    // The index in dataDates of the miniDay we clicked
     var index = event.currentTarget.dataset.index;
+    // Convert to the actual date string
     var date = dataDates[index];
+    // Accessing the data within datedData
     var currentData = datedData[date];
     featDateEl.textContent = date;
 
+    // Updating the chart with new data and labels
+    myChart.data.labels = ["new labels"];
     myChart.data.datasets[0].data = [13,14,15,12,14,18];
     myChart.update();
 }
