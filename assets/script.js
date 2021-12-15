@@ -3,6 +3,8 @@ var dropdownEl = $('.dropdown');
 var inputEl = $(".input");
 var searchEl = $("#search");
 
+var searchHistoryEl = document.getElementById("searchHistory");
+
 var buttonBoxEl = document.getElementsByClassName("buttonBox");
 
 const ctx = document.getElementById('myChart');
@@ -12,10 +14,26 @@ var myChart = new Chart(ctx, {
     data: {
         labels: ["12-5","12-5","12-5","12-5","12-5","12-5"],
         datasets: [{
-            label: 'My First Dataset',
+            label: 'Average',
             data: [12, 19, 3, 5, 2, 3],
             backgroundColor: 'rgb(0, 0, 0)',
             borderColor: 'rgb(0, 0, 0)',
+            tension: .1,
+            borderWidth: 2
+        },
+        {
+            label: 'Max',
+            data: [12, 19, 3, 5, 2, 3],
+            backgroundColor: 'rgb(255, 0, 0)',
+            borderColor: 'rgb(255, 0, 0)',
+            tension: .1,
+            borderWidth: 2
+        },
+        {
+            label: 'Min',
+            data: [12, 19, 3, 5, 2, 3],
+            backgroundColor: 'rgb(0, 0, 255)',
+            borderColor: 'rgb(0, 0, 255)',
             tension: .1,
             borderWidth: 2
         }]
@@ -79,8 +97,6 @@ function setFeature(event) {
     var currentData = datedData[date];
     featDateEl.textContent = date;
 
-
-    myChart.data.datasets[0].label = date;
     // Making the arrays for new data and labels
     var labels = [];
     var dataTemp = [];
@@ -89,13 +105,15 @@ function setFeature(event) {
     for (var i = 0; i < currentData.length; i++) {
         labels.push(currentData[i].dt_txt.substring(11,16))  ;
         dataTemp.push(currentData[i].main.temp);
-        dataMax.push(currentData[i].main.temp);
-        dataMin.push(currentData[i].main.temp);
+        dataMax.push(currentData[i].main.temp_max);
+        dataMin.push(currentData[i].main.temp_min);
     }
 
     // Updating the chart with new data and labels
     myChart.data.labels = labels;
     myChart.data.datasets[0].data = dataTemp;
+    myChart.data.datasets[1].data = dataMax;
+    myChart.data.datasets[2].data = dataMin;
     myChart.update();
 }
 
@@ -103,7 +121,9 @@ function setFeature(event) {
 // Retrieves the data from the weather api
 // Sets weatherData varibale to api data nad renders the rest of the page
 function getData(input) {
+    loadSearch();
     recordSearch(input);
+    saveSearch();
     var apiUrl = "http://api.openweathermap.org/data/2.5/forecast?units=imperial&q=" + input + "&appid=31ed1d78ece05a26dbb0c6020e7b32b5";
     fetch(apiUrl)
         .then(function (response) {
@@ -128,6 +148,7 @@ function renderPage(data) {
 
     organizeData();
     setFeature(0);
+    renderSearch();
 
     for (var i = 0; i < dateEl.length; i++) {
         var currentTemp = datedData[dataDates[i]][0].main;
@@ -149,11 +170,33 @@ function renderPage(data) {
 }
 
 function recordSearch(input) {
-    searchHistory.push(input);
-    if (searchHistory.length > 5) {
-        searchHistory.shift();
+    var index = searchHistory.indexOf(input);
+    if (index > -1) {
+        array.splice(index, 1);
     }
-    localStorage.setItem("history", searchHistory);
+    searchHistory.unshift(input);
+    if (searchHistory.length > 5) {
+        searchHistory.pop();
+    }
+}
+
+function renderSearch() {
+    searchHistoryEl.innerHTML = "";
+    for (var i = 0; i < searchHistory.length; i++) {
+        searchHistoryEl.insertAdjacentHTML("beforeend", `<a class="dropdown-item">${searchHistory[i]}</a>`);
+        console.log(searchHistory);
+    }
+}
+
+function saveSearch() {
+    localStorage.setItem("history", JSON.stringify(searchHistory));
+}
+
+function loadSearch() {
+    searchHistory = JSON.parse(localStorage.getItem("searchHistory"));
+    if (searchHistory === null) {
+        searchHistory = [];
+    }
 }
 
 // Organizes api weather data into datedData based on date
