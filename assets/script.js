@@ -98,6 +98,7 @@ miniDayEl[1].addEventListener("click", setFeature);
 miniDayEl[2].addEventListener("click", setFeature);
 miniDayEl[3].addEventListener("click", setFeature);
 miniDayEl[4].addEventListener("click", setFeature);
+miniDayEl[5].addEventListener("click", setFeature);
 
 // Function called by mini day event listeners to set the feature
 // Not functional yet shouldn't call it 
