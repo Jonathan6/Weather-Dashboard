@@ -37,6 +37,18 @@ var myChart = new Chart(ctx, {
             tension: .1,
             borderWidth: 2
         }]
+    },
+    options: {
+        scales: {
+            y: {
+                ticks: {
+                    // Include a dollar sign in the ticks
+                    callback: function(value) {
+                        return value.toFixed(1)  + "\u00B0F";
+                    }
+                }
+            }
+        }
     }
 });
 
@@ -72,7 +84,13 @@ dropdownEl.on('click', function(event) {
 });
 
 searchEl.on("click", function(event) {
-    getData(inputEl.val().trim());
+    var cityInput = inputEl.val().trim();
+
+    getData(cityInput);
+
+    recordSearch(cityInput.charAt(0).toUpperCase() + cityInput.slice(1));
+    renderSearch();
+    saveSearch();
 });
 
 miniDayEl[0].addEventListener("click", setFeature);
@@ -121,10 +139,7 @@ function setFeature(event) {
 // Retrieves the data from the weather api
 // Sets weatherData varibale to api data nad renders the rest of the page
 function getData(input) {
-    loadSearch();
-    recordSearch(input);
-    saveSearch();
-    var apiUrl = "http://api.openweathermap.org/data/2.5/forecast?units=imperial&q=" + input + "&appid=31ed1d78ece05a26dbb0c6020e7b32b5";
+    var apiUrl = "https://api.openweathermap.org/data/2.5/forecast?units=imperial&q=" + input + "&appid=31ed1d78ece05a26dbb0c6020e7b32b5";
     fetch(apiUrl)
         .then(function (response) {
             if (response.ok) {
@@ -144,11 +159,10 @@ function getData(input) {
 
 // function takes in organized data and renders the webpage by date
 function renderPage(data) {
-    cityEl.textContent = weatherData.city.name;
+    cityEl.textContent = weatherData.city.name + ", " + weatherData.city.country;
 
     organizeData();
     setFeature(0);
-    renderSearch();
 
     for (var i = 0; i < dateEl.length; i++) {
         var currentTemp = datedData[dataDates[i]][0].main;
@@ -172,7 +186,7 @@ function renderPage(data) {
 function recordSearch(input) {
     var index = searchHistory.indexOf(input);
     if (index > -1) {
-        array.splice(index, 1);
+        searchHistory.splice(index, 1);
     }
     searchHistory.unshift(input);
     if (searchHistory.length > 5) {
@@ -189,7 +203,7 @@ function renderSearch() {
 }
 
 function saveSearch() {
-    localStorage.setItem("history", JSON.stringify(searchHistory));
+    localStorage.setItem("searchHistory", JSON.stringify(searchHistory));
 }
 
 function loadSearch() {
@@ -222,3 +236,6 @@ function loadDataLocal() {
 }
 
 myChart.resize(20,20);
+loadSearch();
+renderSearch();
+loadDataLocal();

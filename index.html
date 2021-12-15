@@ -25,7 +25,7 @@
                 <div class="tile is-vertical is-4">
                     <div class="tile is-parent">
                         <!-- Search Bar -->
-                        <div class="tile is-child notification is-danger">
+                        <div class="tile is-child notification is-success">
                             <div class="field">
                                 <div class="box">
                                     <label class="label">Search for a City:</label>
@@ -33,15 +33,8 @@
                                     <input class="input" type="text" placeholder="Text input">
                                     </div>
                                 </div>
-                                <div class="box">
-                                    <button id="search" class="button is-link">Search</button>
-                                </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="tile is-parent">
-                        <!-- Search History -->
-                        <div class="tile is-child notification is-danger">
+                            <button id="search" class="button is-link">Search</button>
                             <div class="dropdown">
                                 <div class="dropdown-trigger">
                                 <button class="button is-info is-light" aria-haspopup="true" aria-controls="dropdown-menu">
@@ -57,30 +50,31 @@
                                     <a href="#" class="dropdown-item">
                                     Dropdown item
                                     </a>
-                                    <a class="dropdown-item">
-                                    Other dropdown item
-                                    </a>
-                                    <a href="#" class="dropdown-item is-active">
-                                    Active dropdown item
-                                    </a>
-                                    <a href="#" class="dropdown-item">
-                                    Other dropdown item
-                                    </a>
-                                    <hr class="dropdown-divider">
-                                    <a href="#" class="dropdown-item">
-                                    With a divider
-                                    </a>
                                 </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <div class="tile is-parent">
+                        <!-- Search History -->
+                        <div class="tile is-child notification is-danger">
+                            
+                        </div>
+                    </div>
                 </div>
-                <div class="tile is-parent  is-8">
-                    <!-- Feature Day Weather -->
-                    <div class="tile is-child notification is-primary">
-                        <p id="featDate">hello</p>
-                        <canvas id="myChart" width="400" height="400"></canvas>
+                <div class="tile">
+                    <div class="tile is-parent  is-6">
+                        <!-- Feature Day Weather -->
+                        <div class="tile is-child notification is-warning">
+                            <p id="featDate">hello</p>
+                            <canvas id="myChart" width="400" height="400"></canvas>
+                        </div>
+                    </div>
+                    <div class="tile is-parent">
+                        <!-- Feature Description -->
+                        <div class="tile is-child notification is-info">
+                            <p>hello</p>
+                        </div>
                     </div>
                 </div>
             </div>
