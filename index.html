@@ -9,7 +9,7 @@
 </head>
 <body>
     <!-- Hero -->
-    <section class="hero is-primary">
+    <section class="hero is-primary is-light">
         <div class="hero-body">
           <p class="title">
             Weather Dashboard
@@ -47,33 +47,45 @@
                                 <div class="dropdown-menu" id="dropdown-menu" role="menu">
                                     <!-- Search History List -->
                                 <div id="searchHistory" class="dropdown-content">
-                                    <a href="#" class="dropdown-item">
-                                    Dropdown item
-                                    </a>
                                 </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="tile is-parent">
-                        <!-- Search History -->
+                        <!-- Extreme Conditions -->
                         <div class="tile is-child notification is-danger">
-                            
+                            <p class="is-2">
+                                <span id="featPop"></span><br>
+                                <span id="feat3h"></span><br>
+                                <span id="featCloudi"></span><br>
+                            </p>
                         </div>
                     </div>
                 </div>
                 <div class="tile">
                     <div class="tile is-parent  is-6">
-                        <!-- Feature Day Weather -->
+                        <!-- Feature Day Graph -->
                         <div class="tile is-child notification is-warning">
-                            <p id="featDate">hello</p>
                             <canvas id="myChart" width="400" height="400"></canvas>
                         </div>
                     </div>
                     <div class="tile is-parent">
                         <!-- Feature Description -->
                         <div class="tile is-child notification is-info">
-                            <p>hello</p>
+                            <div class="content is-size-4">
+                                <h1 id="featDate" class="is-title  is-size-1"></h1>
+                                <p>
+                                    <span id="featSeaLevel"></span><br>
+                                    <span id="featGrndLevel"></span><br>
+                                    <span id="featHumidity"></span><br>
+                                    <span id="featWindSp"></span><br>
+                                    <span id="featWindGust"></span><br>
+                                    <span id="featWindDeg"></span><br>
+                                    <span id="featWeatherMain"></span><br>
+                                    <span id="featWeatherDes"></span>
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -104,9 +116,7 @@
                                         </div>
                                         <div class="content is-size-7">
                                         <span class="humidity"></span><br>
-                                        <span class="wind"></span><br><br>
-                                        <span class="WeatherMain"></span><br>
-                                        <span class="WeatherDes"></span>
+                                        <span class="wind"></span>
                                         </div>
                                     </div>
                                 </div>
@@ -134,9 +144,7 @@
                                         </div>
                                         <div class="content is-size-7">
                                         <span class="humidity"></span><br>
-                                        <span class="wind"></span><br><br>
-                                        <span class="WeatherMain"></span><br>
-                                        <span class="WeatherDes"></span>
+                                        <span class="wind"></span>
                                         </div>
                                     </div>
                                 </div>
@@ -164,9 +172,7 @@
                                         </div>
                                         <div class="content is-size-7">
                                         <span class="humidity"></span><br>
-                                        <span class="wind"></span><br><br>
-                                        <span class="WeatherMain"></span><br>
-                                        <span class="WeatherDes"></span>
+                                        <span class="wind"></span>
                                         </div>
                                     </div>
                                 </div>
@@ -194,9 +200,7 @@
                                         </div>
                                         <div class="content is-size-7">
                                         <span class="humidity"></span><br>
-                                        <span class="wind"></span><br><br>
-                                        <span class="WeatherMain"></span><br>
-                                        <span class="WeatherDes"></span>
+                                        <span class="wind"></span>
                                         </div>
                                     </div>
                                 </div>
@@ -224,9 +228,7 @@
                                         </div>
                                         <div class="content is-size-7">
                                         <span class="humidity"></span><br>
-                                        <span class="wind"></span><br><br>
-                                        <span class="WeatherMain"></span><br>
-                                        <span class="WeatherDes"></span>
+                                        <span class="wind"></span>
                                         </div>
                                     </div>
                                 </div>
@@ -254,10 +256,7 @@
                                         </div>
                                         <div class="content is-size-7">
                                         <span class="humidity"></span><br>
-                                        <span class="wind"></span><br><br>
-                                        <span class="WeatherMain"></span><br>
-                                        <span class="WeatherDes"></span>
-                                        </div>
+                                        <span class="wind"></span>
                                     </div>
                                 </div>
                             </div>

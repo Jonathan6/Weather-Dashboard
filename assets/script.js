@@ -5,10 +5,9 @@ var searchEl = $("#search");
 
 var searchHistoryEl = document.getElementById("searchHistory");
 
-var buttonBoxEl = document.getElementsByClassName("buttonBox");
-
+// Weather Feature Elements
+// Graph
 const ctx = document.getElementById('myChart');
-
 var myChart = new Chart(ctx, {
     type: "line",
     data: {
@@ -52,9 +51,24 @@ var myChart = new Chart(ctx, {
     }
 });
 
-var featDateEl = document.getElementsByClassName("featDate");
+// Extreme Conditions
+var featPopEl = document.getElementById("featPop");
+var feat3hEl = document.getElementById("feat3h");
+var featCloudiEl = document.getElementById("featCloudi");
+var featWindSpEl = document.getElementById("featWindSp");
+var featWingGustEl = document.getElementById("featWindGust");
+var featWindDegEl = document.getElementById("featWindDeg");
 
+// Description
 var featDateEl = document.getElementById("featDate");
+var featSeaLevelEl = document.getElementById("featSeaLevel");
+var featGrndLevelEl = document.getElementById("featGrndLevel");
+var featHumidityEl = document.getElementById("featHumidity");
+var featWeatherMainEl = document.getElementById("featWeatherMain");
+var featWeatherDesEl = document.getElementById("featWeatherDes");
+
+// 6 Day Forcast Elements
+var buttonBoxEl = document.getElementsByClassName("buttonBox");
 
 var miniDayEl = document.getElementsByClassName("mini");
 
@@ -65,8 +79,6 @@ var highEl = document.getElementsByClassName("high");
 var lowEl = document.getElementsByClassName("low");
 var humidityEl = document.getElementsByClassName("humidity");
 var windEl = document.getElementsByClassName("wind");
-var weatherMainEl = document.getElementsByClassName("WeatherMain");
-var weatherDesEl = document.getElementsByClassName("WeatherDes");
 
 // Base api data unfiltered
 var weatherData;
@@ -103,18 +115,17 @@ miniDayEl[5].addEventListener("click", setFeature);
 // Function called by mini day event listeners to set the feature
 // Not functional yet shouldn't call it 
 function setFeature(event) {
+    // The index in dataDates of the miniDay we clicked
     var index;
     if (typeof event === "number") {
         index = event;
     } else {
-        // The index in dataDates of the miniDay we clicked
         index = event.currentTarget.dataset.index;
     }
     // Convert to the actual date string
     var date = dataDates[index];
     // Accessing the data within datedData
     var currentData = datedData[date];
-    featDateEl.textContent = date;
 
     // Making the arrays for new data and labels
     var labels = [];
@@ -134,6 +145,31 @@ function setFeature(event) {
     myChart.data.datasets[1].data = dataMax;
     myChart.data.datasets[2].data = dataMin;
     myChart.update();
+
+    var weatherMain = currentData[0].weather[0].main;
+
+    // Setting Extreme Conditions
+    featPopEl.textContent = "Probability of Precipitation: " + (currentData[0].pop * 100).toFixed(0) + "%";
+    featCloudiEl.textContent = "Cloudiness: " + currentData[0].clouds.all + "%";
+    featWindSpEl.textContent = "Wind Speed: " + currentData[0].wind.speed + " mi/hr";
+    featWingGustEl.textContent = "Wind Gust: " + currentData[0].wind.gust + " mi/hr";
+    featWindDegEl.textContent = "Wind Direction" + currentData[0].wind.deg + "\u00B0";
+
+    if (weatherMain === "Rain") {
+        feat3hEl.textContent = "3 Hour Volume: " + currentData[0].rain["3h"] + " mm";
+    } else if (weatherMain === "Snow") {
+        feat3hEl.textContent = "3 Hour Volume: " + currentData[0].snow["3h"] + " mm";
+    } else {
+        feat3hEl.textContent = "";
+    }
+
+    // Setting Feature Description
+    featDateEl.textContent = date;
+    featSeaLevelEl.textContent = "Pressure at Sea Level: " + currentData[0].main.sea_level + " hPa";
+    featGrndLevelEl.textContent = "Pressure at Ground Level: " + currentData[0].main.grnd_level + " hPa";
+    featHumidityEl.textContent = "Percent Humidity: " + currentData[0].main.humidity + "%";
+    featWeatherMainEl.textContent = "Main Weather: " + weatherMain;
+    featWeatherDesEl.textContent = "Weather Description: " + currentData[0].weather[0].description;
 }
 
 // Called by the search button with whatever is in the input val
@@ -146,7 +182,6 @@ function getData(input) {
             if (response.ok) {
                 response.json().then(function (data) {
                     weatherData = data;
-                    console.log(weatherData);
                     renderPage();
                 });
             } else {
@@ -178,9 +213,6 @@ function renderPage(data) {
         windEl[i].textContent = "Wind: " + current.wind.speed + "MPH";
 
         imgEl[i].src = "assets/images/" + current.weather[0].main + ".jpg"
-        
-        weatherMainEl[i].textContent = current.weather[0].main;
-        weatherDesEl[i].textContent = current.weather[0].description; 
     }
 }
 
@@ -199,7 +231,6 @@ function renderSearch() {
     searchHistoryEl.innerHTML = "";
     for (var i = 0; i < searchHistory.length; i++) {
         searchHistoryEl.insertAdjacentHTML("beforeend", `<a class="dropdown-item">${searchHistory[i]}</a>`);
-        console.log(searchHistory);
     }
 }
 
