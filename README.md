@@ -18,7 +18,7 @@ This website pulls from the Open Weather API to show the weather forcast of a ci
 <details>
 <summary>Click to Reveal</summary>
 
-[![Screenshot of Password Generator Website](assets/images/websitepreview.jpg)]()
+[![Screenshot of Password Generator Website](assets/images/websitepreview.jpg)](https://jonathan6.github.io/Weather-Dashboard/)
 Click the preview to be redirected to the website!
 
 </details>
