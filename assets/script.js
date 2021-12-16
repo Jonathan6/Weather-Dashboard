@@ -12,10 +12,10 @@ const ctx = document.getElementById('myChart');
 var myChart = new Chart(ctx, {
     type: "line",
     data: {
-        labels: ["12-5","12-5","12-5","12-5","12-5","12-5"],
+        labels: [],
         datasets: [{
             label: 'Average',
-            data: [12, 19, 3, 5, 2, 3],
+            data: [],
             backgroundColor: 'rgb(0, 0, 0)',
             borderColor: 'rgb(0, 0, 0)',
             tension: .1,
@@ -23,7 +23,7 @@ var myChart = new Chart(ctx, {
         },
         {
             label: 'Max',
-            data: [12, 19, 3, 5, 2, 3],
+            data: [],
             backgroundColor: 'rgb(255, 0, 0)',
             borderColor: 'rgb(255, 0, 0)',
             tension: .1,
@@ -31,7 +31,7 @@ var myChart = new Chart(ctx, {
         },
         {
             label: 'Min',
-            data: [12, 19, 3, 5, 2, 3],
+            data: [],
             backgroundColor: 'rgb(0, 0, 255)',
             borderColor: 'rgb(0, 0, 255)',
             tension: .1,
@@ -124,7 +124,6 @@ miniDayEl[1].addEventListener("click", setFeature);
 miniDayEl[2].addEventListener("click", setFeature);
 miniDayEl[3].addEventListener("click", setFeature);
 miniDayEl[4].addEventListener("click", setFeature);
-miniDayEl[5].addEventListener("click", setFeature);
 
 // Function called by mini day event listeners to set the feature
 // Not functional yet shouldn't call it 
@@ -167,7 +166,7 @@ function setFeature(event) {
     featCloudiEl.textContent = "Cloudiness: " + currentData[0].clouds.all + "%";
     featWindSpEl.textContent = "Wind Speed: " + currentData[0].wind.speed + " mi/hr";
     featWingGustEl.textContent = "Wind Gust: " + currentData[0].wind.gust + " mi/hr";
-    featWindDegEl.textContent = "Wind Direction" + currentData[0].wind.deg + "\u00B0";
+    featWindDegEl.textContent = "Wind Direction: " + currentData[0].wind.deg + "\u00B0";
 
     if (weatherMain === "Rain") {
         feat3hEl.textContent = "3 Hour Volume: " + currentData[0].rain["3h"] + " mm";
