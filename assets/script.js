@@ -3,6 +3,7 @@ var dropdownEl = $('.dropdown');
 var inputEl = $(".input");
 var searchEl = $("#search");
 
+// Search History Elements
 var searchHistoryEl = document.getElementById("searchHistory");
 
 // Weather Feature Elements
@@ -103,6 +104,19 @@ searchEl.on("click", function(event) {
     recordSearch(cityInput.charAt(0).toUpperCase() + cityInput.slice(1));
     renderSearch();
     saveSearch();
+});
+
+searchHistoryEl.addEventListener("click", function(event) {
+    var index = event.target.dataset.index
+    if (index) {
+        var cityInput = searchHistory[index];
+
+        getData(cityInput);
+
+        recordSearch(cityInput.charAt(0).toUpperCase() + cityInput.slice(1));
+        renderSearch();
+        saveSearch();
+    }
 });
 
 miniDayEl[0].addEventListener("click", setFeature);
@@ -230,7 +244,7 @@ function recordSearch(input) {
 function renderSearch() {
     searchHistoryEl.innerHTML = "";
     for (var i = 0; i < searchHistory.length; i++) {
-        searchHistoryEl.insertAdjacentHTML("beforeend", `<a class="dropdown-item">${searchHistory[i]}</a>`);
+        searchHistoryEl.insertAdjacentHTML("beforeend", `<a class="dropdown-item" data-index=${i}>${searchHistory[i]}</a>`);
     }
 }
 
