@@ -12,10 +12,10 @@ const ctx = document.getElementById('myChart');
 var myChart = new Chart(ctx, {
     type: "line",
     data: {
-        labels: [],
+        labels: ["12-5","12-5","12-5","12-5","12-5","12-5"],
         datasets: [{
             label: 'Average',
-            data: [],
+            data: [12, 19, 3, 5, 2, 3],
             backgroundColor: 'rgb(0, 0, 0)',
             borderColor: 'rgb(0, 0, 0)',
             tension: .1,
@@ -23,7 +23,7 @@ var myChart = new Chart(ctx, {
         },
         {
             label: 'Max',
-            data: [],
+            data: [12, 19, 3, 5, 2, 3],
             backgroundColor: 'rgb(255, 0, 0)',
             borderColor: 'rgb(255, 0, 0)',
             tension: .1,
@@ -31,7 +31,7 @@ var myChart = new Chart(ctx, {
         },
         {
             label: 'Min',
-            data: [],
+            data: [12, 19, 3, 5, 2, 3],
             backgroundColor: 'rgb(0, 0, 255)',
             borderColor: 'rgb(0, 0, 255)',
             tension: .1,
@@ -104,6 +104,8 @@ searchEl.on("click", function(event) {
     recordSearch(cityInput.charAt(0).toUpperCase() + cityInput.slice(1));
     renderSearch();
     saveSearch();
+
+    unveil();
 });
 
 searchHistoryEl.addEventListener("click", function(event) {
@@ -124,6 +126,7 @@ miniDayEl[1].addEventListener("click", setFeature);
 miniDayEl[2].addEventListener("click", setFeature);
 miniDayEl[3].addEventListener("click", setFeature);
 miniDayEl[4].addEventListener("click", setFeature);
+miniDayEl[5].addEventListener("click", setFeature);
 
 // Function called by mini day event listeners to set the feature
 // Not functional yet shouldn't call it 
@@ -213,7 +216,13 @@ function renderPage(data) {
     organizeData();
     setFeature(0);
 
-    for (var i = 0; i < dateEl.length; i++) {
+    if (dataDates.length === 5) {
+        miniDayEl[5].classList.add("veil");
+    } else {
+        miniDayEl[5].classList.remove("veil");
+    }
+
+    for (var i = 0; i < dataDates.length; i++) {
         var currentTemp = datedData[dataDates[i]][0].main;
         var current = datedData[dataDates[i]][0];
 
@@ -279,6 +288,15 @@ function saveDataLocal() {
 function loadDataLocal() {
     weatherData = JSON.parse(localStorage.getItem("TEST"));
 }
+
+function unveil() {
+    var hiddenEl = document.getElementsByClassName("veil");
+
+    for (var i = hiddenEl.length - 1; i >= 0; i--) {
+        hiddenEl[i].classList.remove("veil");
+    }
+}
+
 
 myChart.resize(20,20);
 loadSearch();
