@@ -1,66 +1,53 @@
 # Weather Dashboard
-A website that shows you a small 5-day weather overview of a city that the user inputs.
 
-## Description
-This website pulls from the Open Weather API to show the weather forcast of a city that the user inputs the name of. The weather report consists of the next 5 days from today. There is a featured block that shows a more detailed view of the specific day that the user selects broken down into 3-hour intervals.
+A 5-day weather forecast app that lets users search any city and view detailed conditions broken down by 3-hour intervals.
 
+🔗 **Live Demo:** [Weather Dashboard](https://jonathan6.github.io/Weather-Dashboard/)
 
-## Table of Contents
-- [Description](#description)
-- [Weather Dashboard Website Preview](#weather-dashboard-website-preview)
-- [Overview](#overview)
-- [Bulma](#bulma)
-- [Chart.js](#chartjs)
-- [Conclusion](#conclusion)
+[![Screenshot of Weather Dashboard](assets/images/websitepreview.jpg)](https://jonathan6.github.io/Weather-Dashboard/)
 
-## Weather Dashboard Website Preview
+---
 
-<details>
-<summary>Click to Reveal</summary>
+## Built With
 
-[![Screenshot of Password Generator Website](assets/images/websitepreview.jpg)](https://jonathan6.github.io/Weather-Dashboard/)
-Click the preview to be redirected to the website!
+- **Languages:** HTML, CSS, JavaScript
+- **Frameworks / Libraries:** [Bulma](https://bulma.io/), [Chart.js](https://www.chartjs.org/)
+- **APIs:** [OpenWeather API](https://openweathermap.org/api)
 
-</details>
+---
 
-## Overview
-This project's main focus is using third party server apis. For this project I have chosen Open Weather API since it was well documented and seemed very beginner friendly. Implementing the fetch function was more challenging than I was expecting. Since this was the first time I did something like this I didn't know where to start and I had no idea how to correct the bugs that I ran into. For example I had to get use to the promise and response object types and working with the .then() function in order to properly retrieve data from the API. 
-I also wanted to challenge myself by using another third party api to try and get used to reading and using API documentation. The easiest and most applicable api I found was Bulma and Chart.js. 
+## How It's Made
 
-## Bulma
+The core of this project is a fetch call to the OpenWeather API, which returns a forecast object broken into 3-hour intervals across 5 days. The app parses that response and renders a summary card for each day, with a featured detail view that populates when the user selects a specific day.
 
-Bulma is a framework API that is similar to Bootstrap. It is minimal, 2D, and has a lot of easy to use tools to make the webpage visually appealing. Organizing sections using their tile feature built off of flexbox was a simple experience that led to a great product. 
+Working with the API's promise-based response was the steepest part of the build. Coming in without prior experience with fetch, I had to get comfortable with the Promise and Response object types and chaining `.then()` calls correctly before I could reliably extract the data I needed. Using Insomnia to visually parse the raw API response was a game-changer — it let me map out the object structure before writing a single line of parsing logic.
 
-## Chart.js
+For layout and styling I used Bulma, a lightweight flexbox-based CSS framework. Its tile system made it straightforward to build the card grid without writing a lot of custom CSS. Chart.js was layered on top to visualize the forecast data as a graph for each selected day — its built-in `update()` method made swapping between day datasets clean and simple.
 
-Chart.js is a api that creates appealing and clear graphs for any dataset I provide it. It's ease of you and functionaly really helped add to my webpage. Recently they added an update function that made it easy and simple to swap between datasets for the different days. 
+---
 
-## Conclusion
+## Optimizations
 
-This project was a great introduction to third party server apis. A great tool that I found was Insomnia and the browser console. Insomnia allowed me to visually parse the data object that I recieved from the server and the browser console gave me a interactive way to drill into the object and showed me where I was, allowing me to select what I wanted with ease. I find myself much more confident in using server apis.
+Chart.js's `update()` method was a meaningful find here. Rather than destroying and re-rendering the chart every time a user selects a new day, calling `update()` on the existing chart instance swaps the dataset in place — no flicker, no DOM thrash.
 
-## Sources
+---
 
-<details>
-<summary>Click to Reveal</summary>
+## Lessons Learned
 
-![Screenshot of Cloudy](assets/images/Clouds.jpg)
+This project was my first real experience working with third-party server APIs end-to-end. A few specific takeaways:
 
-Photo by <a href="https://unsplash.com/@epicantus?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Daria Nepriakhina</a> on <a href="https://unsplash.com/s/photos/cloudy?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>
-  
+- **Promises and async data flow** — I had a surface-level understanding of `.then()` coming in. Debugging a real API response forced me to actually internalize how the Promise chain works and where errors surface.
+- **Reading API documentation** — The OpenWeather docs are well-structured, but I still had to slow down and read carefully to understand the difference between the current weather endpoint and the 5-day forecast endpoint. That patience paid off.
+- **Insomnia as a development tool** — Having a dedicated API client to inspect raw responses before writing any parsing code made the whole process faster and less frustrating. It's now a permanent part of my workflow.
 
-![Screenshot of Cloudy](assets/images/Snow.jpg)
+---
 
-Photo by <a href="https://unsplash.com/@thebeardbe?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Filip Bunkens</a> on <a href="https://unsplash.com/s/photos/snow?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>
-  
+## Acknowledgments
 
-![Screenshot of Cloudy](assets/images/Clear.jpg)
-
-Photo by <a href="https://unsplash.com/@ritambaishya?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Ritam Baishya</a> on <a href="https://unsplash.com/s/photos/clear-sky?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>
-  
-
-![Screenshot of Cloudy](assets/images/Rain.jpg)
-
-Photo by <a href="https://unsplash.com/@ewitsoe?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Erik Witsoe</a> on <a href="https://unsplash.com/s/photos/rain-umbrella?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>
-  
-</details>
+- [OpenWeather API](https://openweathermap.org/api)
+- [Bulma CSS Framework](https://bulma.io/)
+- [Chart.js](https://www.chartjs.org/)
+- Photo by [Daria Nepriakhina](https://unsplash.com/@epicantus) on Unsplash — cloudy sky
+- Photo by [Filip Bunkens](https://unsplash.com/@thebeardbe) on Unsplash — snow
+- Photo by [Ritam Baishya](https://unsplash.com/@ritambaishya) on Unsplash — clear sky
+- Photo by [Erik Witsoe](https://unsplash.com/@ewitsoe) on Unsplash — rain
