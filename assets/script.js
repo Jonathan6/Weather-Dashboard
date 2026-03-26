@@ -1,7 +1,23 @@
+var themeMap = {
+        'Clear':         'theme-sunny',
+        'Rain':          'theme-rainy',
+        'Drizzle':       'theme-rainy',
+        'Clouds':        'theme-overcast',
+        'Thunderstorm':  'theme-stormy',
+        'Snow':          'theme-snow',
+        'Mist':          'theme-overcast',
+        'Fog':           'theme-overcast',
+        'Haze':          'theme-overcast',
+        'Smoke':         'theme-overcast',
+        'Dust':          'theme-overcast',
+        'Sand':          'theme-overcast',
+        'Ash':           'theme-overcast',
+        'Squall':        'theme-stormy',
+        'Tornado':       'theme-stormy'
+    };
+
 var cityEl = document.getElementById("cityInput");
-// FIX 1: dropdown now has id="historyDropdown" instead of class="dropdown"
 var dropdownEl = $('#historyDropdown');
-// FIX 2: input now has id="cityInput" instead of class="search_input"
 var inputEl = $("#cityInput");
 var searchEl = $("#search");
 
@@ -53,21 +69,23 @@ var myChart = new Chart(ctx, {
     }
 });
 
-// Extreme Conditions
-var featPopEl = document.getElementById("featPop");
-var feat3hEl = document.getElementById("feat3h");
-var featCloudiEl = document.getElementById("featCloudi");
-var featWindSpEl = document.getElementById("featWindSp");
-var featWingGustEl = document.getElementById("featWindGust");
-var featWindDegEl = document.getElementById("featWindDeg");
+// Extreme Conditions (Features/Unpacked Data)
+// Side Panel
+var featPopEl = document.getElementById("featPop");         //Probability of Precipitation
+var feat3hEl = document.getElementById("feat3h");           //3 Hour Volume (mm)
+var featCloudiEl = document.getElementById("featCloudi");   //Cloudiness
+// MainPanel
+var featWindSpEl = document.getElementById("featWindSp");       //Wind Speed
+var featWingGustEl = document.getElementById("featWindGust");   //Wind Gust
+var featWindDegEl = document.getElementById("featWindDeg");     //Wind Degree
 
 // Description
-var featDateEl = document.getElementById("featDate");
-var featSeaLevelEl = document.getElementById("featSeaLevel");
-var featGrndLevelEl = document.getElementById("featGrndLevel");
-var featHumidityEl = document.getElementById("featHumidity");
-var featWeatherMainEl = document.getElementById("featWeatherMain");
-var featWeatherDesEl = document.getElementById("featWeatherDes");
+var featDateEl = document.getElementById("featDate");               //Date
+var featSeaLevelEl = document.getElementById("featSeaLevel");       //Pressure At Sea Level
+var featGrndLevelEl = document.getElementById("featGrndLevel");     //Pressure At Ground Level
+var featHumidityEl = document.getElementById("featHumidity");       //Percent Humidity
+var featWeatherMainEl = document.getElementById("featWeatherMain"); //Main Weather
+var featWeatherDesEl = document.getElementById("featWeatherDes");   //Main Weather Description
 
 // 6 Day Forecast Elements
 var buttonBoxEl = document.getElementsByClassName("buttonBox");
@@ -90,7 +108,6 @@ var dataDates = [];
 var searchHistory = [];
 
 
-// FIX 3: toggle class is now 'is-open' (was Bulma's 'is-active')
 dropdownEl.on('click', function(event) {
     event.stopPropagation();
     dropdownEl.toggleClass('is-open');
@@ -128,25 +145,7 @@ miniDayEl[3].addEventListener("click", setFeature);
 miniDayEl[4].addEventListener("click", setFeature);
 miniDayEl[5].addEventListener("click", setFeature);
 
-// FIX 4: Maps OpenWeatherMap condition strings to CSS theme classes
 function applyWeatherTheme(weatherMain) {
-    var themeMap = {
-        'Clear':         'theme-sunny',
-        'Rain':          'theme-rainy',
-        'Drizzle':       'theme-rainy',
-        'Clouds':        'theme-overcast',
-        'Thunderstorm':  'theme-stormy',
-        'Snow':          'theme-snow',
-        'Mist':          'theme-overcast',
-        'Fog':           'theme-overcast',
-        'Haze':          'theme-overcast',
-        'Smoke':         'theme-overcast',
-        'Dust':          'theme-overcast',
-        'Sand':          'theme-overcast',
-        'Ash':           'theme-overcast',
-        'Squall':        'theme-stormy',
-        'Tornado':       'theme-stormy'
-    };
     var themeClass = themeMap[weatherMain] || '';
     // Replace all theme-* classes on body, leave any others intact
     document.body.className = document.body.className
@@ -187,7 +186,6 @@ function setFeature(event) {
 
     var weatherMain = currentData[0].weather[0].main;
 
-    // FIX 4 cont: apply theme whenever a day is selected
     applyWeatherTheme(weatherMain);
 
     // Setting Extreme Conditions

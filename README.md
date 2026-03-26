@@ -26,12 +26,6 @@ For layout and styling I used Bulma, a lightweight flexbox-based CSS framework. 
 
 ---
 
-## Optimizations
-
-Chart.js's `update()` method was a meaningful find here. Rather than destroying and re-rendering the chart every time a user selects a new day, calling `update()` on the existing chart instance swaps the dataset in place — no flicker, no DOM thrash.
-
----
-
 ## Lessons Learned
 
 This project was my first real experience working with third-party server APIs end-to-end. A few specific takeaways:
@@ -45,7 +39,6 @@ This project was my first real experience working with third-party server APIs e
 ## Acknowledgments
 
 - [OpenWeather API](https://openweathermap.org/api)
-- [Bulma CSS Framework](https://bulma.io/)
 - [Chart.js](https://www.chartjs.org/)
 - Photo by [Daria Nepriakhina](https://unsplash.com/@epicantus) on Unsplash — cloudy sky
 - Photo by [Filip Bunkens](https://unsplash.com/@thebeardbe) on Unsplash — snow
