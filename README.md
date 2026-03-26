@@ -4,7 +4,7 @@ A 5-day weather forecast app that lets users search any city and view detailed c
 
 🔗 **Live Demo:** [Weather Dashboard](https://jonathan6.github.io/Weather-Dashboard/)
 
-[![Screenshot of Weather Dashboard](assets/images/websitepreview.jpg)](https://jonathan6.github.io/Weather-Dashboard/)
+[![Screenshot of Weather Dashboard](assets/images/websitepreview.png)](https://jonathan6.github.io/Weather-Dashboard/)
 
 ---
 
