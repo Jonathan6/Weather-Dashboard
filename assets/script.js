@@ -1,6 +1,8 @@
-var cityEl = document.getElementById("city");
-var dropdownEl = $('.dropdown');
-var inputEl = $(".input");
+var cityEl = document.getElementById("cityInput");
+// FIX 1: dropdown now has id="historyDropdown" instead of class="dropdown"
+var dropdownEl = $('#historyDropdown');
+// FIX 2: input now has id="cityInput" instead of class="search_input"
+var inputEl = $("#cityInput");
 var searchEl = $("#search");
 
 // Search History Elements
@@ -42,9 +44,8 @@ var myChart = new Chart(ctx, {
         scales: {
             y: {
                 ticks: {
-                    // Include a dollar sign in the ticks
                     callback: function(value) {
-                        return value.toFixed(1)  + "\u00B0F";
+                        return value.toFixed(1) + "\u00B0F";
                     }
                 }
             }
@@ -68,11 +69,9 @@ var featHumidityEl = document.getElementById("featHumidity");
 var featWeatherMainEl = document.getElementById("featWeatherMain");
 var featWeatherDesEl = document.getElementById("featWeatherDes");
 
-// 6 Day Forcast Elements
+// 6 Day Forecast Elements
 var buttonBoxEl = document.getElementsByClassName("buttonBox");
-
 var miniDayEl = document.getElementsByClassName("mini");
-
 var imgEl = document.querySelectorAll("img");
 var dateEl = document.getElementsByClassName("date");
 var averageEl = document.getElementsByClassName("avg");
@@ -85,15 +84,16 @@ var windEl = document.getElementsByClassName("wind");
 var weatherData;
 // Organized data based on date
 var datedData = {};
-// List of all date properites of datedData
+// List of all date properties of datedData
 var dataDates = [];
 // List of all previous searches
 var searchHistory = [];
 
 
+// FIX 3: toggle class is now 'is-open' (was Bulma's 'is-active')
 dropdownEl.on('click', function(event) {
-  event.stopPropagation();
-  dropdownEl.toggleClass('is-active');
+    event.stopPropagation();
+    dropdownEl.toggleClass('is-open');
 });
 
 searchEl.on("click", function(event) {
@@ -109,7 +109,7 @@ searchEl.on("click", function(event) {
 });
 
 searchHistoryEl.addEventListener("click", function(event) {
-    var index = event.target.dataset.index
+    var index = event.target.dataset.index;
     if (index) {
         var cityInput = searchHistory[index];
 
@@ -128,34 +128,57 @@ miniDayEl[3].addEventListener("click", setFeature);
 miniDayEl[4].addEventListener("click", setFeature);
 miniDayEl[5].addEventListener("click", setFeature);
 
-// Function called by mini day event listeners to set the feature
-// Not functional yet shouldn't call it 
+// FIX 4: Maps OpenWeatherMap condition strings to CSS theme classes
+function applyWeatherTheme(weatherMain) {
+    var themeMap = {
+        'Clear':         'theme-sunny',
+        'Rain':          'theme-rainy',
+        'Drizzle':       'theme-rainy',
+        'Clouds':        'theme-overcast',
+        'Thunderstorm':  'theme-stormy',
+        'Snow':          'theme-snow',
+        'Mist':          'theme-overcast',
+        'Fog':           'theme-overcast',
+        'Haze':          'theme-overcast',
+        'Smoke':         'theme-overcast',
+        'Dust':          'theme-overcast',
+        'Sand':          'theme-overcast',
+        'Ash':           'theme-overcast',
+        'Squall':        'theme-stormy',
+        'Tornado':       'theme-stormy'
+    };
+    var themeClass = themeMap[weatherMain] || '';
+    // Replace all theme-* classes on body, leave any others intact
+    document.body.className = document.body.className
+        .replace(/\btheme-\S+/g, '')
+        .trim();
+    if (themeClass) {
+        document.body.classList.add(themeClass);
+    }
+}
+
 function setFeature(event) {
-    // The index in dataDates of the miniDay we clicked
     var index;
     if (typeof event === "number") {
         index = event;
     } else {
         index = event.currentTarget.dataset.index;
     }
-    // Convert to the actual date string
+
     var date = dataDates[index];
-    // Accessing the data within datedData
     var currentData = datedData[date];
 
-    // Making the arrays for new data and labels
     var labels = [];
     var dataTemp = [];
     var dataMax = [];
     var dataMin = [];
     for (var i = 0; i < currentData.length; i++) {
-        labels.push(currentData[i].dt_txt.substring(11,16))  ;
+        labels.push(currentData[i].dt_txt.substring(11, 16));
         dataTemp.push(currentData[i].main.temp);
         dataMax.push(currentData[i].main.temp_max);
         dataMin.push(currentData[i].main.temp_min);
     }
 
-    // Updating the chart with new data and labels
     myChart.data.labels = labels;
     myChart.data.datasets[0].data = dataTemp;
     myChart.data.datasets[1].data = dataMax;
@@ -163,6 +186,9 @@ function setFeature(event) {
     myChart.update();
 
     var weatherMain = currentData[0].weather[0].main;
+
+    // FIX 4 cont: apply theme whenever a day is selected
+    applyWeatherTheme(weatherMain);
 
     // Setting Extreme Conditions
     featPopEl.textContent = "Probability of Precipitation: " + (currentData[0].pop * 100).toFixed(0) + "%";
@@ -188,9 +214,6 @@ function setFeature(event) {
     featWeatherDesEl.textContent = "Weather Description: " + currentData[0].weather[0].description;
 }
 
-// Called by the search button with whatever is in the input val
-// Retrieves the data from the weather api
-// Sets weatherData varibale to api data nad renders the rest of the page
 function getData(input) {
     var apiUrl = "https://api.openweathermap.org/data/2.5/forecast?units=imperial&q=" + input + "&appid=31ed1d78ece05a26dbb0c6020e7b32b5";
     fetch(apiUrl)
@@ -205,11 +228,10 @@ function getData(input) {
             }
         })
         .catch(function (error) {
-            alert("Did not get a resposne");
+            alert("Did not get a response");
         });
-};
+}
 
-// function takes in organized data and renders the webpage by date
 function renderPage(data) {
     cityEl.textContent = weatherData.city.name + ", " + weatherData.city.country;
 
@@ -231,10 +253,10 @@ function renderPage(data) {
         lowEl[i].textContent = "Low: " + currentTemp.temp_min + "\u00B0F";
         humidityEl[i].textContent = "Humidity: " + currentTemp.humidity + "%";
 
-        dateEl[i].textContent = current.dt_txt.substring(5,10);
+        dateEl[i].textContent = current.dt_txt.substring(5, 10);
         windEl[i].textContent = "Wind: " + current.wind.speed + "MPH";
 
-        imgEl[i].src = "assets/images/" + current.weather[0].main + ".jpg"
+        imgEl[i].src = "assets/images/" + current.weather[0].main + ".jpg";
     }
 }
 
@@ -267,12 +289,13 @@ function loadSearch() {
     }
 }
 
-// Organizes api weather data into datedData based on date
-// Also adds all the dates to dataDates so I know how to traverse datedData
 function organizeData() {
-    // For loop that goes through all elements in data
+    // Reset before re-organizing to avoid stale data accumulating across searches
+    datedData = {};
+    dataDates = [];
+
     weatherData.list.forEach(element => {
-        var currentDate = element.dt_txt.substring(0,10);
+        var currentDate = element.dt_txt.substring(0, 10);
         if (!(currentDate in datedData)) {
             datedData[currentDate] = [];
             dataDates.push(currentDate);
@@ -291,14 +314,12 @@ function loadDataLocal() {
 
 function unveil() {
     var hiddenEl = document.getElementsByClassName("veil");
-
     for (var i = hiddenEl.length - 1; i >= 0; i--) {
         hiddenEl[i].classList.remove("veil");
     }
 }
 
-
-myChart.resize(20,20);
+myChart.resize(20, 20);
 loadSearch();
 renderSearch();
 loadDataLocal();

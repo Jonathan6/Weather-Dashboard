@@ -4,269 +4,215 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/style.css">
-    <title>Document</title>
+    <title>Weather Dashboard</title>
 </head>
 <body>
-    <!-- Hero -->
-    <section class="hero is-primary is-light">
-        <div class="hero-body">
-          <p class="title">
-            Weather Dashboard
-          </p>
-          <p id="city" class="subtitle">
-          </p>
+
+    <!-- Hero / Header -->
+    <header class="site-header">
+        <div class="header-inner">
+            <div class="header-text">
+                <h1 class="site-title">Weather Dashboard</h1>
+                <p id="city" class="site-subtitle"></p>
+            </div>
         </div>
-    </section>
-    <!-- Content -->
-    <div class="tile in-ancestor m-3">
-        <div class="tile is-vertical">
-            <div class="tile">
-                <div class="tile is-vertical is-4">
-                    <div class="tile is-parent">
-                        <!-- Search Bar -->
-                        <div class="tile is-child notification is-success">
-                            <div class="field">
-                                <div class="box">
-                                    <label class="label">Search for a City:</label>
-                                    <div class="control">
-                                    <input class="input" type="text" placeholder="Text input">
-                                    </div>
-                                </div>
-                            </div>
-                            <button id="search" class="button is-link">Search</button>
-                            <div class="dropdown">
-                                <div class="dropdown-trigger">
-                                <button class="button is-info is-light" aria-haspopup="true" aria-controls="dropdown-menu">
-                                    <span>Search History</span>
-                                    <span class="icon is-small">
-                                    <i class="fas fa-angle-down" aria-hidden="true"></i>
-                                    </span>
-                                </button>
-                                </div>
-                                <div class="dropdown-menu" id="dropdown-menu" role="menu">
-                                    <!-- Search History List -->
-                                <div id="searchHistory" class="dropdown-content">
-                                </div>
-                                </div>
-                            </div>
-                        </div>
+    </header>
+
+    <!-- Main Layout -->
+    <main class="dashboard-layout">
+
+        <!-- Left Column -->
+        <aside class="sidebar">
+
+            <!-- Search Panel -->
+            <div class="panel search-panel">
+                <label class="panel-label" for="cityInput">Search for a City</label>
+                <input class="search-input" id="cityInput" type="text" placeholder="e.g. Seattle">
+                <button id="search" class="btn btn-primary">Search</button>
+
+                <!-- Search History Dropdown -->
+                <div class="dropdown" id="historyDropdown">
+                    <button class="btn btn-ghost dropdown-toggle" aria-haspopup="true" aria-controls="dropdown-menu">
+                        <span>Search History</span>
+                        <svg class="chevron" width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                    <div class="dropdown-menu" id="dropdown-menu" role="menu">
+                        <div id="searchHistory" class="dropdown-content"></div>
                     </div>
-                    <div class="tile is-parent">
-                        <!-- Extreme Conditions -->
-                        <div class="tile is-child notification is-danger veil">
-                            <p class="is-2">
-                                <span id="featPop"></span><br>
-                                <span id="feat3h"></span><br>
-                                <span id="featCloudi"></span><br>
+                </div>
+            </div>
+
+            <!-- Extreme Conditions Panel -->
+            <div class="panel conditions-panel veil">
+                <p class="panel-label">Conditions</p>
+                <div class="conditions-list">
+                    <span id="featPop" class="condition-item"></span>
+                    <span id="feat3h" class="condition-item"></span>
+                    <span id="featCloudi" class="condition-item"></span>
+                </div>
+            </div>
+
+        </aside>
+
+        <!-- Center + Right -->
+        <section class="main-content">
+
+            <!-- Top Row: Chart + Feature Details -->
+            <div class="feature-row">
+
+                <!-- Chart -->
+                <div class="panel chart-panel veil">
+                    <canvas id="myChart"></canvas>
+                </div>
+
+                <!-- Feature Details -->
+                <div class="panel detail-panel veil">
+                    <h2 id="featDate" class="feat-date"></h2>
+                    <ul class="detail-list">
+                        <li><span id="featSeaLevel"></span></li>
+                        <li><span id="featGrndLevel"></span></li>
+                        <li><span id="featHumidity"></span></li>
+                        <li><span id="featWindSp"></span></li>
+                        <li><span id="featWindGust"></span></li>
+                        <li><span id="featWindDeg"></span></li>
+                        <li><span id="featWeatherMain" class="weather-main"></span></li>
+                        <li><span id="featWeatherDes" class="weather-des"></span></li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <!-- 5-Day Forecast Row -->
+            <div class="panel forecast-panel veil">
+                <p class="panel-label">5-Day Forecast</p>
+                <div class="forecast-grid buttonBox">
+
+                    <!-- Day 1 -->
+                    <div class="forecast-card mini" data-index="0">
+                        <div class="card-img-wrap">
+                            <img src="https://bulma.io/images/placeholders/128x128.png" alt="Weather icon">
+                        </div>
+                        <div class="card-body">
+                            <p class="forecast-date date"></p>
+                            <p class="forecast-avg avg"></p>
+                            <p class="forecast-range">
+                                <span class="high"></span>
+                                <span class="low"></span>
                             </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="tile">
-                    <div class="tile is-parent  is-6">
-                        <!-- Feature Day Graph -->
-                        <div class="tile is-child notification is-warning veil">
-                            <canvas id="myChart" width="400" height="400"></canvas>
-                        </div>
-                    </div>
-                    <div class="tile is-parent">
-                        <!-- Feature Description -->
-                        <div class="tile is-child notification is-info veil">
-                            <div class="content is-size-4">
-                                <h1 id="featDate" class="is-title  is-size-1"></h1>
-                                <p>
-                                    <span id="featSeaLevel"></span><br>
-                                    <span id="featGrndLevel"></span><br>
-                                    <span id="featHumidity"></span><br>
-                                    <span id="featWindSp"></span><br>
-                                    <span id="featWindGust"></span><br>
-                                    <span id="featWindDeg"></span><br>
-                                    <span id="featWeatherMain"></span><br>
-                                    <span id="featWeatherDes"></span>
-                                </p>
+                            <div class="forecast-meta">
+                                <span class="humidity"></span>
+                                <span class="wind"></span>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-            <div class="tile m-3">
-                <!-- 5 Day Forecast -->
-                <div class="tile is-child notification is-link veil">
-                    <div class="columns is-variable is-1-mobile is-0-tablet is-3-desktop is-8-widescreen is-2-fullhd buttonBox">
-                        <!-- Day 1 -->
-                        <div class="column mini" data-index=0>
-                            <div className="column is-one-fifth">
-                                <div class="card">
-                                    <div class="card-image">
-                                        <figure class="image is-4by3">
-                                        <img src="https://bulma.io/images/placeholders/128x128.png" alt="Placeholder image">
-                                        </figure>
-                                    </div>
-                                    <div class="card-content">
-                                        <div class="media">
-                                        <div class="media-content">
-                                            <p class="title is-2 date"></p>
-                                            <p class="title is-5 avg"></p>
-                                            <p class="subtitle is-7">
-                                                <span class="high"></span><br>
-                                                <span class="low"></span>
-                                            </p>
-                                        </div>
-                                        </div>
-                                        <div class="content is-size-7">
-                                        <span class="humidity"></span><br>
-                                        <span class="wind"></span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+
+                    <!-- Day 2 -->
+                    <div class="forecast-card mini" data-index="1">
+                        <div class="card-img-wrap">
+                            <img src="https://bulma.io/images/placeholders/128x128.png" alt="Weather icon">
                         </div>
-                        <!-- Day 2 -->
-                        <div class="column mini" data-index=1>
-                            <div className="column is-one-fifth">
-                                <div class="card">
-                                    <div class="card-image">
-                                        <figure class="image is-4by3">
-                                        <img src="https://bulma.io/images/placeholders/128x128.png" alt="Placeholder image">
-                                        </figure>
-                                    </div>
-                                    <div class="card-content">
-                                        <div class="media">
-                                        <div class="media-content">
-                                            <p class="title is-2 date"></p>
-                                            <p class="title is-5 avg"></p>
-                                            <p class="subtitle is-7">
-                                                <span class="high"></span><br>
-                                                <span class="low"></span>
-                                            </p>
-                                        </div>
-                                        </div>
-                                        <div class="content is-size-7">
-                                        <span class="humidity"></span><br>
-                                        <span class="wind"></span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Day 3 -->
-                        <div class="column mini" data-index=2>
-                            <div className="column is-one-fifth">
-                                <div class="card">
-                                    <div class="card-image">
-                                        <figure class="image is-4by3">
-                                        <img src="https://bulma.io/images/placeholders/128x128.png" alt="Placeholder image">
-                                        </figure>
-                                    </div>
-                                    <div class="card-content">
-                                        <div class="media">
-                                        <div class="media-content">
-                                            <p class="title is-2 date"></p>
-                                            <p class="title is-5 avg"></p>
-                                            <p class="subtitle is-7">
-                                                <span class="high"></span><br>
-                                                <span class="low"></span>
-                                            </p>
-                                        </div>
-                                        </div>
-                                        <div class="content is-size-7">
-                                        <span class="humidity"></span><br>
-                                        <span class="wind"></span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Day 4 -->
-                        <div class="column mini" data-index=3>
-                            <div className="column is-one-fifth">
-                                <div class="card">
-                                    <div class="card-image">
-                                        <figure class="image is-4by3">
-                                        <img src="https://bulma.io/images/placeholders/128x128.png" alt="Placeholder image">
-                                        </figure>
-                                    </div>
-                                    <div class="card-content">
-                                        <div class="media">
-                                        <div class="media-content">
-                                            <p class="title is-2 date"></p>
-                                            <p class="title is-5 avg"></p>
-                                            <p class="subtitle is-7">
-                                                <span class="high"></span><br>
-                                                <span class="low"></span>
-                                            </p>
-                                        </div>
-                                        </div>
-                                        <div class="content is-size-7">
-                                        <span class="humidity"></span><br>
-                                        <span class="wind"></span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Day 5 -->
-                        <div class="column mini" data-index=4>
-                            <div className="column is-one-fifth">
-                                <div class="card">
-                                    <div class="card-image">
-                                        <figure class="image is-4by3">
-                                        <img src="https://bulma.io/images/placeholders/128x128.png" alt="Placeholder image">
-                                        </figure>
-                                    </div>
-                                    <div class="card-content">
-                                        <div class="media">
-                                        <div class="media-content">
-                                            <p class="title is-2 date"></p>
-                                            <p class="title is-5 avg"></p>
-                                            <p class="subtitle is-7">
-                                                <span class="high"></span><br>
-                                                <span class="low"></span>
-                                            </p>
-                                        </div>
-                                        </div>
-                                        <div class="content is-size-7">
-                                        <span class="humidity"></span><br>
-                                        <span class="wind"></span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Day 6 -->
-                        <div class="column mini" data-index=5>
-                            <div className="column is-one-fifth">
-                                <div class="card">
-                                    <div class="card-image">
-                                        <figure class="image is-4by3">
-                                        <img src="https://bulma.io/images/placeholders/128x128.png" alt="Placeholder image">
-                                        </figure>
-                                    </div>
-                                    <div class="card-content">
-                                        <div class="media">
-                                        <div class="media-content">
-                                            <p class="title is-2 date"></p>
-                                            <p class="title is-5 avg"></p>
-                                            <p class="subtitle is-7">
-                                                <span class="high"></span><br>
-                                                <span class="low"></span>
-                                            </p>
-                                        </div>
-                                        </div>
-                                        <div class="content is-size-7">
-                                        <span class="humidity"></span><br>
-                                        <span class="wind"></span>
-                                    </div>
-                                </div>
+                        <div class="card-body">
+                            <p class="forecast-date date"></p>
+                            <p class="forecast-avg avg"></p>
+                            <p class="forecast-range">
+                                <span class="high"></span>
+                                <span class="low"></span>
+                            </p>
+                            <div class="forecast-meta">
+                                <span class="humidity"></span>
+                                <span class="wind"></span>
                             </div>
                         </div>
                     </div>
+
+                    <!-- Day 3 -->
+                    <div class="forecast-card mini" data-index="2">
+                        <div class="card-img-wrap">
+                            <img src="https://bulma.io/images/placeholders/128x128.png" alt="Weather icon">
+                        </div>
+                        <div class="card-body">
+                            <p class="forecast-date date"></p>
+                            <p class="forecast-avg avg"></p>
+                            <p class="forecast-range">
+                                <span class="high"></span>
+                                <span class="low"></span>
+                            </p>
+                            <div class="forecast-meta">
+                                <span class="humidity"></span>
+                                <span class="wind"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Day 4 -->
+                    <div class="forecast-card mini" data-index="3">
+                        <div class="card-img-wrap">
+                            <img src="https://bulma.io/images/placeholders/128x128.png" alt="Weather icon">
+                        </div>
+                        <div class="card-body">
+                            <p class="forecast-date date"></p>
+                            <p class="forecast-avg avg"></p>
+                            <p class="forecast-range">
+                                <span class="high"></span>
+                                <span class="low"></span>
+                            </p>
+                            <div class="forecast-meta">
+                                <span class="humidity"></span>
+                                <span class="wind"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Day 5 -->
+                    <div class="forecast-card mini" data-index="4">
+                        <div class="card-img-wrap">
+                            <img src="https://bulma.io/images/placeholders/128x128.png" alt="Weather icon">
+                        </div>
+                        <div class="card-body">
+                            <p class="forecast-date date"></p>
+                            <p class="forecast-avg avg"></p>
+                            <p class="forecast-range">
+                                <span class="high"></span>
+                                <span class="low"></span>
+                            </p>
+                            <div class="forecast-meta">
+                                <span class="humidity"></span>
+                                <span class="wind"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Day 6 -->
+                    <div class="forecast-card mini" data-index="5">
+                        <div class="card-img-wrap">
+                            <img src="https://bulma.io/images/placeholders/128x128.png" alt="Weather icon">
+                        </div>
+                        <div class="card-body">
+                            <p class="forecast-date date"></p>
+                            <p class="forecast-avg avg"></p>
+                            <p class="forecast-range">
+                                <span class="high"></span>
+                                <span class="low"></span>
+                            </p>
+                            <div class="forecast-meta">
+                                <span class="humidity"></span>
+                                <span class="wind"></span>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
-        </div>
-    </div>
+
+        </section>
+    </main>
+
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="assets/script.js"></script>

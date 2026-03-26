@@ -1,3 +1,594 @@
-.veil {
-    display: none;
+/* ============================================================
+   WEATHER DASHBOARD — styles.css
+   Themes: sunny | rainy | overcast | stormy | snow
+   Apply theme by adding a class to <body>:
+     document.body.className = 'theme-sunny';
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap');
+
+/* ── CSS Custom Properties (default = overcast) ── */
+:root {
+  --bg-page:        #ECEAE6;
+  --bg-surface:     #F5F3EF;
+  --bg-card:        #FFFFFF;
+  --bg-header:      #DEDAD4;
+
+  --text-primary:   #2C2C2C;
+  --text-secondary: #6B6860;
+  --text-muted:     #9B9790;
+
+  --border:         #D0CCC5;
+
+  --accent:         #7A7670;
+  --accent-text:    #F5F3EF;
+  --accent-hover:   #615E5A;
+
+  --shadow:         rgba(44, 44, 44, 0.08);
+
+  --transition: background-color 0.6s ease, color 0.6s ease,
+                border-color 0.6s ease, box-shadow 0.6s ease;
 }
+
+/* ── Sunny Theme ── */
+body.theme-sunny {
+  --bg-page:        #FDF6E3;
+  --bg-surface:     #FEF9EE;
+  --bg-card:        #FFFDF6;
+  --bg-header:      #F9EDD0;
+
+  --text-primary:   #3A2E1E;
+  --text-secondary: #7A6548;
+  --text-muted:     #B09870;
+
+  --border:         #EAD9B0;
+
+  --accent:         #D97B2A;
+  --accent-text:    #FFF8EE;
+  --accent-hover:   #BC6620;
+
+  --shadow:         rgba(58, 46, 30, 0.10);
+}
+
+/* ── Rainy Theme ── */
+body.theme-rainy {
+  --bg-page:        #E8EDF2;
+  --bg-surface:     #F0F4F8;
+  --bg-card:        #FAFCFE;
+  --bg-header:      #D8E0EA;
+
+  --text-primary:   #1C2532;
+  --text-secondary: #4A5A6E;
+  --text-muted:     #7A8FA5;
+
+  --border:         #C0CCD8;
+
+  --accent:         #4A7FA5;
+  --accent-text:    #EEF4FA;
+  --accent-hover:   #3A6888;
+
+  --shadow:         rgba(28, 37, 50, 0.10);
+}
+
+/* ── Stormy Theme ── */
+body.theme-stormy {
+  --bg-page:        #1E2433;
+  --bg-surface:     #252D40;
+  --bg-card:        #2D3650;
+  --bg-header:      #161C28;
+
+  --text-primary:   #D8DFE8;
+  --text-secondary: #8A97A8;
+  --text-muted:     #5A6878;
+
+  --border:         #3A4560;
+
+  --accent:         #5B7FBA;
+  --accent-text:    #E8EEF8;
+  --accent-hover:   #4A6CA0;
+
+  --shadow:         rgba(0, 0, 0, 0.30);
+}
+
+/* ── Snow Theme ── */
+body.theme-snow {
+  --bg-page:        #EEF2F7;
+  --bg-surface:     #F6F9FC;
+  --bg-card:        #FDFEFF;
+  --bg-header:      #E0E8F2;
+
+  --text-primary:   #1D2C3E;
+  --text-secondary: #3D5470;
+  --text-muted:     #7A96B4;
+
+  --border:         #C0D0E0;
+
+  --accent:         #6A9AC4;
+  --accent-text:    #EEF4FA;
+  --accent-hover:   #5280A8;
+
+  --shadow:         rgba(29, 44, 62, 0.08);
+}
+
+/* ============================================================
+   RESET & BASE
+   ============================================================ */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html { font-size: 16px; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 400;
+  background-color: var(--bg-page);
+  color: var(--text-primary);
+  line-height: 1.6;
+  min-height: 100vh;
+  transition: var(--transition);
+}
+
+img { display: block; max-width: 100%; }
+
+/* ============================================================
+   HEADER
+   ============================================================ */
+
+.site-header {
+  background-color: var(--bg-header);
+  border-bottom: 1px solid var(--border);
+  padding: 1.75rem 2rem;
+  transition: var(--transition);
+}
+
+.header-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.site-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(1.6rem, 3vw, 2.4rem);
+  font-weight: 400;
+  color: var(--text-primary);
+  line-height: 1.1;
+  transition: color 0.6s ease;
+}
+
+.site-subtitle {
+  font-size: 0.95rem;
+  font-weight: 300;
+  color: var(--text-secondary);
+  margin-top: 0.25rem;
+  transition: color 0.6s ease;
+}
+
+/* ============================================================
+   DASHBOARD LAYOUT
+   ============================================================ */
+
+.dashboard-layout {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 1.5rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 1.75rem 2rem;
+}
+
+@media (max-width: 900px) {
+  .dashboard-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ============================================================
+   SIDEBAR
+   ============================================================ */
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* ============================================================
+   PANELS
+   ============================================================ */
+
+.panel {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 1.25rem;
+  transition: var(--transition);
+}
+
+.panel.veil {
+  /* veil panels start hidden until JS populates them */
+  /* JS can remove this class or it stays for styling consistency */
+}
+
+.panel-label {
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 500;
+  color: var(--text-muted);
+  margin-bottom: 0.85rem;
+  transition: color 0.6s ease;
+}
+
+/* ============================================================
+   SEARCH PANEL
+   ============================================================ */
+
+.search-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.search-input {
+  width: 100%;
+  padding: 0.6rem 0.85rem;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 400;
+  background-color: var(--bg-card);
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  outline: none;
+  transition: var(--transition), border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.search-input::placeholder {
+  color: var(--text-muted);
+}
+
+.search-input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(var(--accent), 0.12);
+}
+
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 500;
+  padding: 0.55rem 1.1rem;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  letter-spacing: 0.025em;
+  text-align: center;
+  transition: background-color 0.2s ease, color 0.2s ease,
+              border-color 0.2s ease, opacity 0.2s ease, var(--transition);
+}
+
+.btn-primary {
+  background-color: var(--accent);
+  color: var(--accent-text);
+  width: 100%;
+  justify-content: center;
+}
+
+.btn-primary:hover {
+  background-color: var(--accent-hover);
+}
+
+.btn-ghost {
+  background-color: transparent;
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+  width: 100%;
+  justify-content: space-between;
+}
+
+.btn-ghost:hover {
+  background-color: var(--bg-card);
+  color: var(--text-primary);
+  border-color: var(--accent);
+}
+
+/* ============================================================
+   DROPDOWN
+   ============================================================ */
+
+.dropdown {
+  position: relative;
+}
+
+.chevron {
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+.dropdown.is-open .chevron {
+  transform: rotate(180deg);
+}
+
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  box-shadow: 0 4px 16px var(--shadow);
+  z-index: 100;
+  overflow: hidden;
+  transition: var(--transition);
+}
+
+.dropdown.is-open .dropdown-menu {
+  display: block;
+}
+
+.dropdown-content {
+  padding: 0.35rem 0;
+}
+
+/* JS adds .dropdown-item anchors into #searchHistory */
+.dropdown-item {
+  display: block;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.dropdown-item:hover {
+  background-color: var(--bg-surface);
+  color: var(--text-primary);
+}
+
+/* ============================================================
+   CONDITIONS PANEL
+   ============================================================ */
+
+.conditions-panel {
+  flex: 1;
+}
+
+.conditions-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.condition-item {
+  font-size: 0.875rem;
+  font-weight: 300;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  transition: color 0.6s ease;
+}
+
+.condition-item:empty { display: none; }
+
+/* ============================================================
+   MAIN CONTENT
+   ============================================================ */
+
+.main-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* ── Feature Row ── */
+.feature-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+@media (max-width: 700px) {
+  .feature-row { grid-template-columns: 1fr; }
+}
+
+/* ── Chart Panel ── */
+.chart-panel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chart-panel canvas {
+  width: 100% !important;
+  height: auto !important;
+  max-height: 300px;
+}
+
+/* ── Detail Panel ── */
+.detail-panel {}
+
+.feat-date {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(1.8rem, 4vw, 3rem);
+  font-weight: 400;
+  color: var(--text-primary);
+  line-height: 1.1;
+  margin-bottom: 1rem;
+  transition: color 0.6s ease;
+}
+
+.detail-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.detail-list li {
+  font-size: 0.875rem;
+  font-weight: 300;
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.45rem;
+  transition: color 0.6s ease, border-color 0.6s ease;
+}
+
+.detail-list li:last-child {
+  border-bottom: none;
+}
+
+.detail-list li:empty,
+.detail-list li span:empty {
+  display: none;
+}
+
+.weather-main {
+  font-weight: 500;
+  font-size: 1rem;
+  color: var(--text-primary);
+  text-transform: capitalize;
+}
+
+.weather-des {
+  font-style: italic;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  text-transform: capitalize;
+}
+
+/* ============================================================
+   FORECAST PANEL
+   ============================================================ */
+
+.forecast-panel {}
+
+.forecast-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 0.75rem;
+}
+
+@media (max-width: 1100px) {
+  .forecast-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (max-width: 600px) {
+  .forecast-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* ── Forecast Card ── */
+.forecast-card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: var(--transition), transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.forecast-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px var(--shadow);
+  border-color: var(--accent);
+}
+
+.forecast-card.is-active {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px var(--accent);
+}
+
+.card-img-wrap {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background-color: var(--bg-surface);
+}
+
+.card-img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: var(--transition);
+}
+
+.card-body {
+  padding: 0.65rem 0.75rem 0.75rem;
+}
+
+.forecast-date {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1rem;
+  color: var(--text-primary);
+  margin-bottom: 0.2rem;
+  transition: color 0.6s ease;
+}
+
+.forecast-avg {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--accent);
+  margin-bottom: 0.2rem;
+  transition: color 0.6s ease;
+}
+
+.forecast-range {
+  display: flex;
+  gap: 0.4rem;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-bottom: 0.35rem;
+  transition: color 0.6s ease;
+}
+
+.forecast-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  font-size: 0.72rem;
+  font-weight: 300;
+  color: var(--text-muted);
+  border-top: 1px solid var(--border);
+  padding-top: 0.35rem;
+  margin-top: 0.35rem;
+  transition: color 0.6s ease, border-color 0.6s ease;
+}
+
+/* ============================================================
+   UTILITY — EMPTY STATE
+   ============================================================ */
+
+/* Panels with .veil class before data loads */
+.veil {
+  opacity: 0.5;
+  pointer-events: none;
+  transition: opacity 0.4s ease, var(--transition);
+}
+
+.veil.loaded {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* ============================================================
+   SCROLLBAR (subtle, theme-aware)
+   ============================================================ */
+
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-page); }
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
